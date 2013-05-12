@@ -9,7 +9,7 @@ import moodle.Procesor;
  *
  * @author Mates
  */
-public class EditDlouhe extends Edit{
+public class EditEssay extends Edit{
     
    Essay otazka;
         
@@ -17,7 +17,7 @@ public class EditDlouhe extends Edit{
     javax.swing.JTextArea zmenaZadani;
 
 
-    public EditDlouhe(int no) {
+    public EditEssay(int no) {
        super(no);
        
         otazka = (Essay) Procesor.get(no);
@@ -26,7 +26,7 @@ public class EditDlouhe extends Edit{
         this.setVisible(true);
     }
 
-    public EditDlouhe() {
+    public EditEssay() {
         super(-1);
         otazka= new Essay();
         initComponents();

@@ -2,7 +2,7 @@ package moodle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import moodle.Gui.Gui3;
+import moodle.Gui.GuiMain;
 
 public class Moodle {
 
@@ -11,16 +11,16 @@ public class Moodle {
      */
     public static void main(String[] args) throws  FileNotFoundException, IOException {
 
-       Procesor.readAbc();
+     //  Procesor.readAbc();
          
-       // Procesor.restore();
+        Procesor.restore();
         
-         Gui3 g= new Gui3();
+         GuiMain g= new GuiMain();
         g.setVisible(true);
 
-       Procesor.save();
-      Procesor.clear();
-       Procesor.restore();
+// //      Procesor.save();
+     /// Procesor.clear();
+   //    Procesor.restore();
         
         //System.out.println(Procesor.toString2());
 

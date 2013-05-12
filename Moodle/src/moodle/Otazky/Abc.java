@@ -9,6 +9,8 @@ package moodle.Otazky;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import moodle.Gui.EditAbc;
+
 
 /**
  *
@@ -37,7 +39,7 @@ List spatne=new ArrayList<>();
     public void setImg(List<String> img) {
         this.img = img;
     }
-
+    
 
     public List getSpravne() {
         return spravne;
