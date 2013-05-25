@@ -1,7 +1,11 @@
 package moodle.Gui;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.Box;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import moodle.Otazky.Essay;
 import moodle.Procesor;
 
@@ -34,45 +38,26 @@ public class EditEssay extends Edit{
         this.setVisible(true);       
     }
     
-
-   
-                     
     private void initComponents() {
-       
-
         zmenaZadani = new javax.swing.JTextArea();
-        zmenaZadani.setColumns(20);
+        zmenaZadani.setColumns(50);
         zmenaZadani.setLineWrap(true);
         zmenaZadani.setRows(5);
-        
-         
-        saveButton.setText("Save");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionEvent(evt);
-            }});
-
-        resetButton.setText("Reset");
-        resetButton.addActionListener(new java.awt.event.ActionListener() { 
-            public void actionPerformed(java.awt.event.ActionEvent evt) {reset();} });
-        
     
-       Box zadaniBox = Box.createHorizontalBox();
-        this.add(zadaniBox);
-        zadaniBox.add(new JLabel("Zadani"));
-       zadaniBox.add(zmenaZadani);
-       
-          Box buttonBox = Box.createHorizontalBox();
-        this.add(buttonBox);
-        buttonBox.add(saveButton);
-        buttonBox.add(resetButton);
-              
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridBagLayout());
+           a.a(panel1, new JLabel("Název:"), 0, 0, 1, 1, GridBagConstraints.EAST);
+        a.a(panel1, new JLabel("Zadání:"), 0, 1, 1, 1, GridBagConstraints.EAST);
+      
+        a.a(panel1, zmenaNazvu, 1, 0, 2, 1, GridBagConstraints.WEST);
+
+        a.a(panel1, new JScrollPane(zmenaZadani), 1, 1, 1, 1, GridBagConstraints.WEST);
+        
+     this.add(panel1);
     }
     
-
-  
-    
-    private void saveButtonActionEvent(java.awt.event.ActionEvent evt) {
+   @Override
+    public void saveButtonActionEvent(java.awt.event.ActionEvent evt) {
 
         otazka.setName(zmenaNazvu.getText());
         otazka.setZadani(zmenaZadani.getText());

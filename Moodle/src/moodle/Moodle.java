@@ -11,9 +11,9 @@ public class Moodle {
      */
     public static void main(String[] args) throws  FileNotFoundException, IOException {
 
-     //  Procesor.readAbc();
+    Procesor.readAbc();
          
-        Procesor.restore();
+//        Procesor.restore();
         
          GuiMain g= new GuiMain();
         g.setVisible(true);

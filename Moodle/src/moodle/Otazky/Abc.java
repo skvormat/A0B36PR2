@@ -32,14 +32,7 @@ List spatne=new ArrayList<>();
     public Abc() {
     }
 
-    public List<String> getImg() {
-        return img;
-    }
 
-    public void setImg(List<String> img) {
-        this.img = img;
-    }
-    
 
     public List getSpravne() {
         return spravne;

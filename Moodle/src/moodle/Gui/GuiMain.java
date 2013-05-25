@@ -7,6 +7,7 @@ import java.awt.event.ItemEvent;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.Box;
+import javax.swing.JButton;
 import moodle.Otazky.Abc;
 import moodle.Otazky.Essay;
 import moodle.Procesor;
@@ -24,6 +25,7 @@ public class GuiMain extends javax.swing.JFrame {
     private java.awt.List seznamOtazek;
     Edit editaceOt;
     Box editBox;
+    JButton save, reset;
 
     public GuiMain() {
         initComponents();
@@ -52,6 +54,7 @@ public class GuiMain extends javax.swing.JFrame {
 
         createButtonCreateButton(Abc.class, "Abc");
         createButtonCreateButton(Essay.class, "Essay");
+        save = new JButton("Save");
 
         BorderLayout mujLayout = new BorderLayout();
         this.setLayout(mujLayout);
@@ -61,6 +64,22 @@ public class GuiMain extends javax.swing.JFrame {
         mujBox.add(seznamOtazek).setSize(500, 500);
         mujBox.add(createButton.get(Abc.class));
         mujBox.add(createButton.get(Essay.class));
+
+        mujBox.add(save);
+        save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editaceOt.saveButtonActionEvent(evt);
+            }
+        });
+
+        reset = new JButton("Reset");
+        mujBox.add(reset);
+        reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prekresli();
+            }
+        });
+
 
         editBox = Box.createHorizontalBox();
 
@@ -97,6 +116,10 @@ public class GuiMain extends javax.swing.JFrame {
     }
 
     public void seznamItemListener(ItemEvent evt) {
+        prekresli();
+    }
+
+    public void prekresli() {
         if (editaceOt.saved == true) {
             redrawSeznamu();
         }
@@ -113,12 +136,13 @@ public class GuiMain extends javax.swing.JFrame {
 
         editBox.add(editaceOt);
         pack();
+
     }
 
     public void redrawSeznamu() {
         int indexSeznamu = seznamOtazek.getSelectedIndex();
         seznamOtazek.removeAll();
-        
+
         for (int i = 0; i < Procesor.size(); i++) {
             seznamOtazek.add(Procesor.get(i).getName());
 
