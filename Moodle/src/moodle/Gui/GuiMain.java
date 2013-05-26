@@ -8,9 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JMenuBar;
 import moodle.Otazky.Abc;
 import moodle.Otazky.Essay;
 import moodle.Procesor;
+import sun.misc.JavaxSecurityAuthKerberosAccess;
 
 /**
  *
@@ -23,6 +25,7 @@ public class GuiMain extends javax.swing.JFrame {
     Map<Class, javax.swing.JButton> createButton = new HashMap<>();
     private javax.swing.JLabel nahledOtazky;
     private java.awt.List seznamOtazek;
+    JMenuDemo bar = new JMenuDemo();
     Edit editaceOt;
     Box editBox;
     JButton save, reset;
@@ -37,17 +40,16 @@ public class GuiMain extends javax.swing.JFrame {
         this.setMinimumSize(new Dimension(800, 700));
         this.setMaximumSize(new Dimension(800, 700));
         this.setResizable(false);
+
         editaceOt = new EditAbc(0);
-
         seznamOtazek = new java.awt.List();
-
         seznamOtazek.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                seznamItemListener(evt);
+                prekresli();
             }
         });
-        redrawSeznamu();
 
+        redrawSeznamu();
         createButton.put(Essay.class, new javax.swing.JButton());
 
         nahledOtazky = new javax.swing.JLabel();
@@ -61,29 +63,44 @@ public class GuiMain extends javax.swing.JFrame {
         Box mujBox = Box.createVerticalBox();
 
         this.add(mujBox, BorderLayout.WEST);
-        mujBox.add(seznamOtazek).setSize(500, 500);
-        mujBox.add(createButton.get(Abc.class));
-        mujBox.add(createButton.get(Essay.class));
 
-        mujBox.add(save);
+
+        mujBox.add(seznamOtazek).setSize(500, 500);
+                
+        Box tlacitka = Box.createHorizontalBox();
+        
+        
+        tlacitka.add(createButton.get(Abc.class));
+        tlacitka.add(createButton.get(Essay.class));
+
+        Box tlacitka2 = Box.createHorizontalBox();
+        tlacitka2.add(save);
+        
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editaceOt.saveButtonActionEvent(evt);
+                redrawSeznamu();
             }
         });
 
         reset = new JButton("Reset");
-        mujBox.add(reset);
+        tlacitka2.add(reset);
         reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prekresli();
             }
         });
-
+mujBox.add(tlacitka);
+mujBox.add(tlacitka2);
 
         editBox = Box.createHorizontalBox();
 
         this.add(editBox, BorderLayout.CENTER);
+
+
+bar.setFocusable(true);
+bar.isFocusOwner();
+        this.setJMenuBar(bar);
 
         pack();
     }
@@ -115,26 +132,32 @@ public class GuiMain extends javax.swing.JFrame {
         pack();
     }
 
-    public void seznamItemListener(ItemEvent evt) {
-        prekresli();
-    }
-
     public void prekresli() {
-        if (editaceOt.saved == true) {
+        if (Procesor.redraw == true) {
             redrawSeznamu();
+            Procesor.redraw = false;
+
         }
 
-        editBox.removeAll();
-        if (Procesor.get(seznamOtazek.getSelectedIndex()).getClass() == Abc.class) {
-            editaceOt = new EditAbc(seznamOtazek.getSelectedIndex());
-        }
+        try {
+            editBox.removeAll();
+            if (Procesor.get(seznamOtazek.getSelectedIndex()).getClass() == Abc.class) {
+                editaceOt = new EditAbc(seznamOtazek.getSelectedIndex());
+            }
 
-        if (Procesor.get(seznamOtazek.getSelectedIndex()).getClass() == Essay.class) {
-            editaceOt = new EditEssay(seznamOtazek.getSelectedIndex());
+            if (Procesor.get(seznamOtazek.getSelectedIndex()).getClass() == Essay.class) {
+                editaceOt = new EditEssay(seznamOtazek.getSelectedIndex());
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Pretekl seznam v prekresleni");
+        } catch (NullPointerException e) {
+            System.out.println("nullPointer seznam v prekresleni");
+
         }
 
 
         editBox.add(editaceOt);
+
         pack();
 
     }

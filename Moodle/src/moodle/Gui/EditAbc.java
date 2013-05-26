@@ -82,10 +82,11 @@ public class EditAbc extends Edit {
         otazkaAbc.setSpravne(odpovediSpravne.getList());
         saved = true;
 
-        if (no > 0) {
+        if (no > -1&& Procesor.size()>0) {
             Procesor.set(no, otazkaAbc);
         } else {
             Procesor.add(otazkaAbc);
+            no=Procesor.size()-1;
         }
 
 
@@ -93,7 +94,7 @@ public class EditAbc extends Edit {
     }
 
     private void reset() {
-        if (no > 0) {
+        if (no >= 0) {
             zmenaNazvu.setText(Procesor.get(no).getName());
             zmenaZadani.setText(Procesor.get(no).getZadani());
         }

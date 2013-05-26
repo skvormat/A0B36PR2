@@ -8,7 +8,7 @@ package moodle.Gui;
  *
  * @author Mates
  */
-abstract class Edit extends javax.swing.JPanel {
+abstract class Edit extends javax.swing.JPanel{
     int no = -1;
     boolean saved=false;
     

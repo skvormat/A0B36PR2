@@ -13,17 +13,15 @@ import moodle.Procesor;
  *
  * @author Mates
  */
-public class EditEssay extends Edit{
-    
-   Essay otazka;
-        
+public class EditEssay extends Edit {
+
+    Essay otazka;
     javax.swing.JTable tabulkaOdpovedi;
     javax.swing.JTextArea zmenaZadani;
 
-
     public EditEssay(int no) {
-       super(no);
-       
+        super(no);
+
         otazka = (Essay) Procesor.get(no);
         initComponents();
         reset();
@@ -32,49 +30,53 @@ public class EditEssay extends Edit{
 
     public EditEssay() {
         super(-1);
-        otazka= new Essay();
+        otazka = new Essay();
         initComponents();
         reset();
-        this.setVisible(true);       
+        this.setVisible(true);
     }
-    
+
     private void initComponents() {
         zmenaZadani = new javax.swing.JTextArea();
         zmenaZadani.setColumns(50);
         zmenaZadani.setLineWrap(true);
         zmenaZadani.setRows(5);
-    
+
         JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
-           a.a(panel1, new JLabel("Název:"), 0, 0, 1, 1, GridBagConstraints.EAST);
+        a.a(panel1, new JLabel("Název:"), 0, 0, 1, 1, GridBagConstraints.EAST);
         a.a(panel1, new JLabel("Zadání:"), 0, 1, 1, 1, GridBagConstraints.EAST);
-      
+
         a.a(panel1, zmenaNazvu, 1, 0, 2, 1, GridBagConstraints.WEST);
 
         a.a(panel1, new JScrollPane(zmenaZadani), 1, 1, 1, 1, GridBagConstraints.WEST);
-        
-     this.add(panel1);
+
+        this.add(panel1);
     }
-    
-   @Override
+
+    @Override
     public void saveButtonActionEvent(java.awt.event.ActionEvent evt) {
 
         otazka.setName(zmenaNazvu.getText());
         otazka.setZadani(zmenaZadani.getText());
-    
 
-        saved=true;
-        
-        if(no>0)
-        Procesor.set(no, otazka);
-        else
-        Procesor.add(otazka);
+
+        saved = true;
+
+        if (no > -1) {
+            Procesor.set(no, otazka);
+        } else {
+            Procesor.add(otazka);
+            no = Procesor.size() - 1;
+
+        }
+
 
     }
-    
+
     private void reset() {
-    
-        if (no > 0) {
+
+        if (no > -1) {
             zmenaNazvu.setText(Procesor.get(no).getName());
             zmenaZadani.setText(Procesor.get(no).getZadani());
         } else {
@@ -82,5 +84,5 @@ public class EditEssay extends Edit{
             zmenaZadani.setText("");
         }
 
-}
     }
+}

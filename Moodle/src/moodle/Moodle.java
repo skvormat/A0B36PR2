@@ -13,14 +13,14 @@ public class Moodle {
 
     Procesor.readAbc();
          
-//        Procesor.restore();
+//        Procesor.load();
         
          GuiMain g= new GuiMain();
         g.setVisible(true);
 
 // //      Procesor.save();
      /// Procesor.clear();
-   //    Procesor.restore();
+   //    Procesor.load();
         
         //System.out.println(Procesor.toString2());
 
