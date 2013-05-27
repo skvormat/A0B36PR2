@@ -9,7 +9,6 @@ package moodle.Otazky;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import moodle.Gui.EditAbc;
 
 
 /**
@@ -18,48 +17,76 @@ import moodle.Gui.EditAbc;
  */
 public class Abc extends Ot implements Serializable{
 
-List spravne=new ArrayList<>();
-List spatne=new ArrayList<>();
+private List spravne=new ArrayList<>();
+private List spatne=new ArrayList<>();
 
+    /**
+     *
+     * @param name
+     */
     public Abc(String name) {
         super(name);
     }
 
+    /**
+     *
+     * @param name
+     * @param zadani
+     */
     public Abc(String name, String zadani) {
         super(name, zadani);
     }
 
+    /**
+     *
+     */
     public Abc() {
     }
 
-
-
+    /**
+     *
+     * @return
+     */
     public List getSpravne() {
         return spravne;
     }
 
+    /**
+     *
+     * @return
+     */
     public List getSpatne() {
         return spatne;
     }
+    /**
+     *
+     */
     public void nulovatSpravneSpatne()    
     {
     this.spatne.clear();
     this.spravne.clear();
     }
             
+    /**
+     *
+     * @param spravne
+     */
     public void addSpravne(String spravne) {
         this.spravne.add(spravne);
     }
 
+    /**
+     *
+     * @param spatne
+     */
     public void addSpatne(String spatne) {
         this.spatne.add(spatne);
     }
-
     
-   
-    
-    
-    
+    /**
+     *
+     * @return
+     */
     public String toXml() {
         StringBuilder stb = new StringBuilder(800);
 
@@ -94,10 +121,18 @@ List spatne=new ArrayList<>();
          
     }
 
+    /**
+     *
+     * @param spravne
+     */
     public void setSpravne(List spravne) {
         this.spravne = spravne;
     }
 
+    /**
+     *
+     * @param spatne
+     */
     public void setSpatne(List spatne) {
         this.spatne = spatne;
     }
@@ -135,6 +170,4 @@ List spatne=new ArrayList<>();
 
         return stb.toString();
     }
-
-
 }

@@ -3,33 +3,33 @@ package moodle.Gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JMenuBar;
 import moodle.Otazky.Abc;
+import moodle.Otazky.Cloze;
 import moodle.Otazky.Essay;
+import moodle.Otazky.TrueFalse;
 import moodle.Procesor;
-import sun.misc.JavaxSecurityAuthKerberosAccess;
 
 /**
  *
  * @author Mates
  */
-public class GuiMain extends javax.swing.JFrame {
+public final class GuiMain extends javax.swing.JFrame {
 
-    // private javax.swing.JButton createButtonAbc;
-    //private javax.swing.JButton createButtonDlouhe;
-    Map<Class, javax.swing.JButton> createButton = new HashMap<>();
-    private javax.swing.JLabel nahledOtazky;
-    private java.awt.List seznamOtazek;
-    JMenuDemo bar = new JMenuDemo();
-    Edit editaceOt;
-    Box editBox;
-    JButton save, reset;
+    private Map<Class, javax.swing.JButton> createOtazkaButton = new HashMap<>();
+    private java.awt.List listOtazek;
+    private HorniMenu bar = new HorniMenu();
+    private Edit editOtazkaPanel;
+    private Box editBox;
+    private JButton save, reset;
 
+    /**
+     *
+     */
     public GuiMain() {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -41,135 +41,198 @@ public class GuiMain extends javax.swing.JFrame {
         this.setMaximumSize(new Dimension(800, 700));
         this.setResizable(false);
 
-        editaceOt = new EditAbc(0);
-        seznamOtazek = new java.awt.List();
-        seznamOtazek.addItemListener(new java.awt.event.ItemListener() {
+        listOtazek = new java.awt.List(); //list otazek
+
+        //pri zmene prekresli       
+        listOtazek.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                prekresli();
+                prekresliList();
             }
         });
+        listOtazek.addMouseListener(new java.awt.event.MouseListener() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                    if (Procesor.redraw == true) {
+            redrawListuOtazek();
+            Procesor.redraw = false;
 
-        redrawSeznamu();
-        createButton.put(Essay.class, new javax.swing.JButton());
+        }
+            }
 
-        nahledOtazky = new javax.swing.JLabel();
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
 
-        createButtonCreateButton(Abc.class, "Abc");
-        createButtonCreateButton(Essay.class, "Essay");
-        save = new JButton("Save");
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
 
-        BorderLayout mujLayout = new BorderLayout();
-        this.setLayout(mujLayout);
-        Box mujBox = Box.createVerticalBox();
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
 
-        this.add(mujBox, BorderLayout.WEST);
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+
+        });
 
 
-        mujBox.add(seznamOtazek).setSize(500, 500);
-                
-        Box tlacitka = Box.createHorizontalBox();
-        
-        
-        tlacitka.add(createButton.get(Abc.class));
-        tlacitka.add(createButton.get(Essay.class));
+        redrawListuOtazek();//
+        createOtazkaButton.put(Essay.class, new javax.swing.JButton());
 
-        Box tlacitka2 = Box.createHorizontalBox();
-        tlacitka2.add(save);
-        
+        //vytvoreni tlacitek pro jednotlive tridz otazek
+        createButtonCreateOtazkaButton(Abc.class, "Abc");
+        createButtonCreateOtazkaButton(Essay.class, "Essay");
+        createButtonCreateOtazkaButton(TrueFalse.class, "True/False");
+        createButtonCreateOtazkaButton(Cloze.class, "Cloze");
+
+        save = new JButton("Save");//ulozeni OT
+        reset = new JButton("Reset");//Reset OT
+
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editaceOt.saveButtonActionEvent(evt);
-                redrawSeznamu();
+                editOtazkaPanel.saveButtonActionEvent(evt);//vola save obstraktni editace odkud ji dedi jednotlive editacni tridy
+                redrawListuOtazek();
             }
         });
-
-        reset = new JButton("Reset");
-        tlacitka2.add(reset);
         reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                prekresli();
+                prekresliList();
             }
         });
-mujBox.add(tlacitka);
-mujBox.add(tlacitka2);
+        initGrafiky();
+    }
+
+    private void initGrafiky() {
+        //pridani baru
+        this.setJMenuBar(bar);
+
+
+//tvorba zakladniho leyoutu
+        this.setLayout(new BorderLayout());
+        Box zakladniLauot = Box.createVerticalBox();
+
+        this.add(zakladniLauot, BorderLayout.WEST);
+
+
+        zakladniLauot.add(listOtazek).setSize(500, 500);
+        zakladniLauot.add(Box.createVerticalStrut(5));
+
+//boxy jednotlivych radku tlacitek
+        Box boxTlacitka1 = Box.createHorizontalBox();
+        boxTlacitka1.add(createOtazkaButton.get(Abc.class));
+        boxTlacitka1.add(createOtazkaButton.get(Essay.class));
+        zakladniLauot.add(boxTlacitka1);
+        zakladniLauot.add(Box.createVerticalStrut(5));
+
+        Box boxTlacitka2 = Box.createHorizontalBox();
+        boxTlacitka2.add(createOtazkaButton.get(TrueFalse.class));
+        boxTlacitka2.add(createOtazkaButton.get(Cloze.class));
+        zakladniLauot.add(boxTlacitka2);
+        zakladniLauot.add(Box.createVerticalStrut(5));
+
+        Box boxTlacitkaSaveReset = Box.createHorizontalBox();
+        boxTlacitkaSaveReset.add(save);
+        boxTlacitkaSaveReset.add(reset);
+        zakladniLauot.add(boxTlacitkaSaveReset);
+
 
         editBox = Box.createHorizontalBox();
 
         this.add(editBox, BorderLayout.CENTER);
 
 
-bar.setFocusable(true);
-bar.isFocusOwner();
-        this.setJMenuBar(bar);
-
         pack();
     }
 
-    private void createButtonCreateButton(Class classOtazky, String popisek) {
+    //metoda tvorby tlacitek pro tvorbu otazek
+    private void createButtonCreateOtazkaButton(Class classOtazky, String popisek) {
 
-        createButton.put(classOtazky, new javax.swing.JButton());
-
-        createButton.get(classOtazky).setText(popisek);
-        createButton.get(classOtazky).addActionListener(new java.awt.event.ActionListener() {
+        createOtazkaButton.put(classOtazky, new javax.swing.JButton());
+        createOtazkaButton.get(classOtazky).setText(popisek);
+        createOtazkaButton.get(classOtazky).addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createButtonActionEvent(evt);
+                createOtazkaButtonActionEvent(evt);
             }
         });
 
     }
 
-    private void createButtonActionEvent(ActionEvent evt) {
+    //event tlacitek tvorby otazek, dle typu zvoli spravne editokno
+    private void createOtazkaButtonActionEvent(ActionEvent evt) {
         editBox.removeAll();
 
-        if (evt.getSource().hashCode() == createButton.get(Abc.class).hashCode()) {
-            editaceOt = new EditAbc();
+        if (evt.getSource().hashCode() == createOtazkaButton.get(Abc.class).hashCode()) {
+            editOtazkaPanel = new EditAbc();
         }
-        if (evt.getSource().hashCode() == createButton.get(Essay.class).hashCode()) {
-            editaceOt = new EditEssay();
+        if (evt.getSource().hashCode() == createOtazkaButton.get(Essay.class).hashCode()) {
+            editOtazkaPanel = new EditEssay();
+        }
+        if (evt.getSource().hashCode() == createOtazkaButton.get(TrueFalse.class).hashCode()) {
+            editOtazkaPanel = new EditTrueFalse();
+        }
+        if (evt.getSource().hashCode() == createOtazkaButton.get(Cloze.class).hashCode()) {
+            editOtazkaPanel = new EditCloze();
         }
 
-        editBox.add(editaceOt);
+        editBox.add(editOtazkaPanel);
         pack();
     }
 
-    public void prekresli() {
+    /**
+     * prekresli list otazek
+     */
+    private void prekresliList() {
+        if(Procesor.size()!=0)
+        {     
+            
         if (Procesor.redraw == true) {
-            redrawSeznamu();
+            redrawListuOtazek();
             Procesor.redraw = false;
 
         }
 
+        //podle typu zvolene otazky zvoli editacni panel
         try {
             editBox.removeAll();
-            if (Procesor.get(seznamOtazek.getSelectedIndex()).getClass() == Abc.class) {
-                editaceOt = new EditAbc(seznamOtazek.getSelectedIndex());
+            if (Procesor.get(listOtazek.getSelectedIndex()).getClass() == Abc.class) {
+                editOtazkaPanel = new EditAbc(listOtazek.getSelectedIndex());
             }
 
-            if (Procesor.get(seznamOtazek.getSelectedIndex()).getClass() == Essay.class) {
-                editaceOt = new EditEssay(seznamOtazek.getSelectedIndex());
+            if (Procesor.get(listOtazek.getSelectedIndex()).getClass() == Essay.class) {
+                editOtazkaPanel = new EditEssay(listOtazek.getSelectedIndex());
             }
+            if (Procesor.get(listOtazek.getSelectedIndex()).getClass() == TrueFalse.class) {
+                editOtazkaPanel = new EditTrueFalse(listOtazek.getSelectedIndex());
+            }
+            if (Procesor.get(listOtazek.getSelectedIndex()).getClass() == Cloze.class) {
+                editOtazkaPanel = new EditCloze(listOtazek.getSelectedIndex());
+            }
+            
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Pretekl seznam v prekresleni");
         } catch (NullPointerException e) {
             System.out.println("nullPointer seznam v prekresleni");
-
         }
 
-
-        editBox.add(editaceOt);
-
+        editBox.add(editOtazkaPanel);
         pack();
+        }
 
     }
 
-    public void redrawSeznamu() {
-        int indexSeznamu = seznamOtazek.getSelectedIndex();
-        seznamOtazek.removeAll();
+    /**
+     * prekresli list otazek
+     */
+    private void redrawListuOtazek() {
+        int indexSeznamu = listOtazek.getSelectedIndex();
+        listOtazek.removeAll();
+
 
         for (int i = 0; i < Procesor.size(); i++) {
-            seznamOtazek.add(Procesor.get(i).getName());
-
+            listOtazek.add(Procesor.get(i).getName());
         }
-        seznamOtazek.select(indexSeznamu);
+        listOtazek.select(indexSeznamu);
     }
 }

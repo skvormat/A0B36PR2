@@ -9,10 +9,12 @@ import java.util.Iterator;
 
 /**
  *
+ * @param <E> 
  * @author Mates
  */
 public class OtArray<E> extends ArrayList<E> {
 
+    //Generuje xml hlavicku
     @Override
    public String toString() {
         
@@ -29,12 +31,13 @@ public class OtArray<E> extends ArrayList<E> {
             E e = it.next();
             sb.append(e == this ? "(this Collection)" : e);
             if (! it.hasNext())
+            {
+                 sb.append("\n</quiz>\n");
                 return sb.toString();
-            sb.append("\n\n");
+            }
+                sb.append("\n\n");
         }
         
-        
-      // sb.append("</quiz>");
     }
     
 }

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -28,17 +29,32 @@ public class Procesor {
 
     private static List<Ot> list = new OtArray<>();
     private static int citac = 0;
+   
+    /**
+     *Informace o zmene a nutnem prekresleni
+     */
     public static boolean redraw= true;
 
-
+    /**
+     *
+     */
     public Procesor() {
     }
 
+    /**
+     *Pridani otayky do listu
+     * @param otazka 
+     */
     public static void add(Ot otazka) {
         list.add(otazka);
         citac++;
     }
 
+    /**
+     *
+     * @param i cislo otazky
+     * @return vrati otazku na i
+     */
     public static Ot get(int i) {
     try{
         Ot otazka=list.get(i);
@@ -51,14 +67,26 @@ public class Procesor {
     }
     }
 
+    /**
+     *
+     * @return pocet otazek
+     */
     public static int size() {
         return citac;
     }
 
+    /**
+     *
+     * @return vrati vygenerovane xml
+     */
     public static String toString2() {
         return list.toString();
     }
     
+    /**
+     *
+     * @param file ulotzi do file xml export
+     */
     public static void xmlExport(File file) {
          String path = file.getPath();
 
@@ -69,31 +97,48 @@ public class Procesor {
             } else {
                 saveFile = new FileOutputStream(path + ".xml");
             }
-
-
-            ObjectOutputStream save = new ObjectOutputStream(saveFile);
+            
+            PrintWriter out = new PrintWriter(saveFile);
+            out.print(list.toString());
+            out.close();
+saveFile.close();
+            
+  //          ObjectOutputStream save = new ObjectOutputStream(saveFile);
            
-                save.writeObject(list.toString());
-            saveFile.close();
-
+             
+         //   save.reset();
+      //          save.writeObject(list.toString());
+        //    save.close();
         } catch (Exception exc) {
             JOptionPane.showMessageDialog (null, "Vyskytla se chyba při exportu do xml. ");
             System.out.println("Osetreno:");       
             exc.printStackTrace(); // If there was an error, print the info.
         }
+         
         
     }
 
+    /**
+     *
+     * @param i 
+     * @param otazka 
+     * Set otazky on i
+ */
     public static void set(int i, Ot otazka) {
         list.set(i, otazka);
     }
 
-    public static void readAbc() throws UnsupportedEncodingException, FileNotFoundException, IOException {
+    /**
+     *
+     * @param file 
+     */
+    
+    public static void readAbc(File file) {
 
-        //dopsat vzjimky!
-
+       
+try{
         CSVReader reader = new CSVReader(
-                new InputStreamReader(new FileInputStream("c:\\Users\\Mates\\Desktop\\Work\\EN2.csv"), "CP1250"), ';', '\"');
+                new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "CP1250"), ';', '\"');
         String[] line;
         String namePrefix = new String();
 
@@ -124,8 +169,6 @@ public class Procesor {
                 }
             }
 
-
-
             //vztvoreni novehe otezky
             if (line[1].length() > 1) {
                 if (tmp != null) {
@@ -155,9 +198,20 @@ public class Procesor {
 
 
         }
+}catch (Exception exc) {
+            JOptionPane.showMessageDialog (null, "Vyskytla se chyba při načítání souboru. ");
+            System.out.println("Osetreno:");
+            exc.printStackTrace(); // If there was an error, print the info.
+        }
 
     }
 
+   
+    /**
+     *
+     * @param file
+     * Save colection to file
+     */
     public static void save(File file) {
 
         try {  // Catch errors in I/O if necessary.
@@ -187,14 +241,24 @@ public class Procesor {
 
     }
 
+    /**
+     *remove all dara from colection
+     */
     public static void clear() {
         citac = 0;
         list.clear();
         Procesor.redraw=true;
     }
 
-    public static void load(File file) {
-
+    /**
+     *
+     * @param file
+     * load colection from file
+     */
+    public static void load(File file,boolean add) {
+        if (!add) 
+        Procesor.clear();
+        
         try {  // Catch errors in I/O if necessary.
             FileInputStream saveFile = new FileInputStream(file);
 
@@ -211,10 +275,9 @@ public class Procesor {
      Procesor.redraw=true;
 
 
-        } catch (Exception exc) {
+        } catch (IOException | ClassNotFoundException exc) {
             JOptionPane.showMessageDialog (null, "Vyskytla se chyba při náčítání souboru. ");
             System.out.println("Osetreno:");
-            exc.printStackTrace(); // If there was an error, print the info.
         }
 
     }

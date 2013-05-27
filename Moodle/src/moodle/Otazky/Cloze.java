@@ -4,28 +4,56 @@
  */
 package moodle.Otazky;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Mates
  */
-public class Cloze extends Ot implements Serializable{
+public class Cloze extends Ot{
     
     
+    /**
+     *
+     */
     public Cloze() {
     }
 
+    /**
+     *
+     * @param name
+     */
     public Cloze(String name) {
         super(name);
     }
 
+    /**
+     *
+     * @param name
+     * @param zadani
+     */
     public Cloze(String name, String zadani) {
         super(name, zadani);
     }
     
-    public String prevodNaShort(){
-        System.out.println("not supported yet");
-        return null;
+    /**
+     *
+     * @return
+     */
+    public String getZadaniPrevod(){
+        return getZadani().replace("<<", " {1:SHORTANSWER:=").replace(">>", "} ");  
     }
+
+    @Override
+    public String toString() {
+          StringBuilder stb = new StringBuilder(800);
+         
+    stb.append("<question type=\"cloze\"><name><text>");
+    stb.append(this.getName()); //nahrazeni mnezery v nayvu podtrzitkem
+    stb.append("</text></name><questiontext format=\"moodle_auto_format\"><text><![CDATA[<H3>");
+    stb.append(this.getZadaniPrevod());
+    stb.append("</H3><BR>]]></text></questiontext></question>");
+
+    return stb.toString(); 
+    }
+    
+    
 }

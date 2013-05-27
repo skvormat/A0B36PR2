@@ -12,14 +12,26 @@ package moodle.Otazky;
  */
 public class Essay extends Ot{
     
+    /**
+     *
+     * @param name
+     */
     public Essay(String name) {
         super(name);
     }
 
+    /**
+     *
+     * @param name
+     * @param zadani
+     */
     public Essay(String name, String zadani) {
         super(name, zadani);
     }
 
+    /**
+     *
+     */
     public Essay() {
     }
 

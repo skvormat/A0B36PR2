@@ -12,21 +12,27 @@ import moodle.Procesor;
  *
  * @author Mates
  */
-public class EditAbc extends Edit {
+public final class EditAbc extends Edit {
 
-    Abc otazkaAbc;
-    javax.swing.JTextArea zmenaZadani;
-    JScrollPane scroll;
-    Odpovedi odpovediSpravne, odpovediSpatne;
+   private Abc otazkaAbc;
+   private javax.swing.JTextArea zmenaZadani;
+   private Odpovedi odpovediSpravne, odpovediSpatne;
 
+    /**
+     *
+     * @param no
+     */
     public EditAbc(int no) {
         super(no);
         otazkaAbc = (Abc) Procesor.get(no);
         initComponents();
-        reset();
+        this.reset();
         this.setVisible(true);
     }
 
+    /**
+     *
+     */
     public EditAbc() {
         super();
         otazkaAbc = new Abc();
@@ -42,36 +48,35 @@ public class EditAbc extends Edit {
         zmenaZadani.setLineWrap(true);
         zmenaZadani.setRows(5);
         zmenaZadani.setSize(100, 300);
-        scroll = new JScrollPane(zmenaZadani);
-
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridBagLayout());
-        a.a(panel1, new JLabel("Název:"), 0, 0, 1, 1, GridBagConstraints.EAST);
-        a.a(panel1, new JLabel("Zadání:"), 0, 1, 1, 1, GridBagConstraints.EAST);
-        a.a(panel1, new JLabel("Odpovedi:"), 0, 2, 1, 1, GridBagConstraints.EAST);
-
-        a.a(panel1, zmenaNazvu, 1, 0, 2, 1, GridBagConstraints.WEST);
-
-        a.a(panel1, new JScrollPane(zmenaZadani), 1, 1, 1, 1, GridBagConstraints.WEST);
-
-        odpovediSpatne = new Odpovedi(otazkaAbc.getSpatne());
-        odpovediSpravne = new Odpovedi(otazkaAbc.getSpravne());
-        a.a(panel1, odpovediSpatne, 1, 2, 2, 1, GridBagConstraints.NORTHWEST);
-        a.a(panel1, odpovediSpravne, 1, 2, 2, 1, GridBagConstraints.NORTHEAST);
+       try{
+        odpovediSpatne = new Odpovedi(otazkaAbc.getSpatne(),"Spatne");
+        odpovediSpravne = new Odpovedi(otazkaAbc.getSpravne(), "Spravne");
+           }catch (Exception exc) {
+            System.out.println("Pretekly odpovedi v Abc");
+            System.out.println("Osetreno:");
+        }
         
         
-       
 
-
-
-
-        this.add(panel1);
-
+        JPanel panelHlavni = new JPanel();
+        panelHlavni.setLayout(new GridBagLayout());
+        GridLayoutManager.a(panelHlavni, new JLabel("Název:"), 0, 0, 1, 1, GridBagConstraints.EAST);
+        GridLayoutManager.a(panelHlavni, new JLabel("Zadání:"), 0, 1, 1, 1, GridBagConstraints.EAST);
+        GridLayoutManager.a(panelHlavni, new JLabel("Odpovedi:"), 0, 2, 1, 1, GridBagConstraints.EAST);
+        GridLayoutManager.a(panelHlavni, zmenaNazvu, 1, 0, 2, 1, GridBagConstraints.WEST);
+        GridLayoutManager.a(panelHlavni, new JScrollPane(zmenaZadani), 1, 1, 1, 1, GridBagConstraints.WEST);
+        GridLayoutManager.a(panelHlavni, odpovediSpatne, 1, 2, 2, 1, GridBagConstraints.NORTHWEST);
+        GridLayoutManager.a(panelHlavni, odpovediSpravne, 1, 2, 2, 1, GridBagConstraints.NORTHEAST);
+        this.add(panelHlavni);
         this.setVisible(true);
 
 
     }
 
+    /**
+     *
+     * @param evt
+     */
     @Override
     public void saveButtonActionEvent(java.awt.event.ActionEvent evt) {
 
@@ -93,7 +98,8 @@ public class EditAbc extends Edit {
 
     }
 
-    private void reset() {
+   @Override
+    public void reset() {
         if (no >= 0) {
             zmenaNazvu.setText(Procesor.get(no).getName());
             zmenaZadani.setText(Procesor.get(no).getZadani());

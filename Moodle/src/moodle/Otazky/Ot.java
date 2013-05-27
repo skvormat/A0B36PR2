@@ -17,46 +17,76 @@ import java.util.List;
 public abstract class Ot implements Serializable{
 private String name;
 private String zadani;
-List<String> img=new ArrayList<>(3);
+public List<String> img=new ArrayList<>(3);
 
-public Ot() {
+    /**
+     *
+     */
+    public Ot() {
     }
 
-public Ot(String name) {
+    /**
+     *
+     * @param name
+     */
+    public Ot(String name) {
         this.name = name.replaceAll(" ", "_");
     }
 
+    /**
+     *
+     * @param name
+     * @param zadani
+     */
     public Ot(String name, String zadani) {
         this.name = name.replaceAll(" ", "_");
         this.zadani = zadani;
 }
 
-    
-
-
+    /**
+     *
+     * @param img
+     */
     public void setImg(String img) {
-        if (img.length()>2) this.img.add(img);
-            
-        
-        
+        if (img.length()>2) this.img.add(img);   
     }
 
- public void setName(String name) {
+    /**
+     *
+     * @param name
+     */
+    public void setName(String name) {
         this.name = name.replaceAll(" ", "_");
     }
 
+    /**
+     *
+     * @param zadani
+     */
     public void setZadani(String zadani) {
         this.zadani = zadani;
     }
         
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getZadani() {
         return zadani;
     }
 
+    /**
+     *
+     * @param img
+     */
     public void setImg(List<String> img) {
         this.img = img;
     }
@@ -70,6 +100,10 @@ public Ot(String name) {
 //        System.out.println("setSpatne not supported");    
 //    }
 
+    /**
+     *
+     * @return
+     */
     public List<String> getImg() {
         return img;
     }
