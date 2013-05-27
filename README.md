@@ -1,12 +1,24 @@
 A0B36PR2
 ========
-Semestrální práce - Maticová kalkulačka
+Dokumentace semestrální práce PR2
 
-Maticová kalkulačka schopná matice: Násobit, sčítat, transponovat, gausovat, vypočítat determinant, a inverzní matici. Ideálně se schopností zobrazit postup. Použitelné GUI, pravděpodobně jako webový applet. 
-Mým cílem je napsat maticovou kalkulačku, nikoli "semestrální práci maticová kalkulačka". Prostě aby se ta věc dala používat.
+Apolikace slouží k tvorbě, správe a exportu otázek pro systém LMS Moodle. 
+Podporuje tyto typy úloh:
+Multichoice
+Essay
+Cloze
+True-False question
 
-Současná třídní plán jest:
+A tyto operace s nimi:
+Přidání úlohy
+Editace úlohy
+Uložení a načtení listu úloh ze souboru
+Import úloh typu multichouce ze souboru csv
+Export úloh do xml importovatelného systémem LMS Moodle
 
-Třída matice, obsahující elementární operace matice, implemetrující interface který bude pracovat s třídami jednotlivých operací
 
-GUI jsem zatím neřešil
+Struktura programu.
+Program se skládá ze tří částí-jádra, otázek a gui
+
+Otázky
+Třída Ot.java je abstraktní třídou ze které jsou odděděny všechny třáidy otázek, každá otázka v sobě implementuje 
