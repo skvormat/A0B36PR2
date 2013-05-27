@@ -21,4 +21,12 @@ Struktura programu.
 Program se skládá ze tří částí-jádra, otázek a gui
 
 Otázky
-Třída Ot.java je abstraktní třídou ze které jsou odděděny všechny třáidy otázek, každá otázka v sobě implementuje 
+Třída Ot.java je abstraktní třídou ze které jsou odděděny všechny třáidy otázek, každá otázka osahuje název, zadání, odpověď a je v ní překryta metoda toString která převede otazku do xml.
+
+Jádro
+Statická třída procesor v sobě vytváří list astraktních otázek který osahuje jednotlivé otázky, implementuje načtení, uložení a export do xml(jedná se vlastně o toString do souboru)
+
+Gui
+celé gui se odehrává v jednom okně které obsahuje list otázek, tlačítka pro vytvoření jednotlivých otázek, uložení a reset, horní lištu s uložením a exporty a JPanel obsahující editaci zvoleného typu otázky
+Každá otázka má svoji třídu dědící ze společné třídy editace. Jedná se o frame který osahuje grafickou reprezentaci třídy otázky, metodu uložení a resetu.
+
